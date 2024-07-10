@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Frontend Practice 2</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="shortcut icon" href="s.png" type="image/x-icon" />
+    <script defer src="app.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-title">User Details</div>
+      <div class="btn-grp">
+        <div class="search-button">
+          <input id="search" type="text" />
+          <i class="fas fa-search fa-2x" onclick="searchUser()"></i>
+        </div>
+        <div class="header-button">
+          <button id="adduser" onclick="showAddUser()">Add User</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="table-body">
+      <table id="table">
+        <thead>
+          <tr id="row-header">
+            <td>Avatar</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <div id="update-user">
+        <p class="update-user-title">Update User</p>
+        <form id="update-form" action="">
+          <label for="firstname">First name:</label><br />
+          <input type="text" id="firstname" name="firstname" value="" /><br />
+          <label for="lastname">Last name:</label><br />
+          <input type="text" id="lastname" name="lastname" value="" /><br />
+          <label for="avatar">Avatar:</label><br />
+          <input type="text" id="avatar" name="avatar" value="" /><br /><br />
+
+          <!-- <input id="submit-btn" type="button" value="Submit" onclick="updateSubmit()" /> -->
+
+          <div class="btn-container">
+            <input
+              id="submit-btn"
+              type="button"
+              value="Submit"
+              onclick="updateSubmit()"
+            />
+            <input
+              id="cancel-btn"
+              type="button"
+              value="cancel"
+              onclick="cancel()"
+            />
+          </div>
+
+          <input type="hidden" id="userId" name="id" />
+        </form>
+      </div>
+      <div id="add-user">
+        <p class="add-user-title">Add User</p>
+        <form id="add-form" action="">
+          <label for="firstname">First name:</label><br />
+          <input
+            type="text"
+            id="add-firstname"
+            name="firstname"
+            value=""
+            required
+          /><br />
+          <label for="lastname">Last name:</label><br />
+          <input
+            type="text"
+            id="add-lastname"
+            name="lastname"
+            value=""
+            required
+          /><br />
+          <label for="email">Email:</label><br />
+          <input
+            type="email"
+            id="add-email"
+            name="email"
+            value=""
+            required
+          /><br />
+          <label for="avatar">Avatar:</label><br />
+          <input
+            type="url"
+            id="add-avatar"
+            name="avatar"
+            value=""
+            required
+          /><br /><br />
+
+          <div class="btn-container">
+            <input
+              id="submit-btn"
+              type="button"
+              value="Add"
+              onclick="addUser()"
+            />
+            <input
+              id="cancel-btn"
+              type="button"
+              value="cancel"
+              onclick="cancel()"
+            />
+          </div>
+
+          <input type="hidden" id="toogle-add" name="toogle-add" value="0" />
+        </form>
+      </div>
+    </div>
+    <div id="searched-user">
+      <table id="searched-user-table">
+        <thead>
+          <tr id="row-header">
+            <td>Avatar</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+          </tr>
+        </thead>
+        <tbody id="search-table-body">
+
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
