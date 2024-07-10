@@ -5,6 +5,7 @@
     "addfirstname",
     "addform",
     "addlastname",
+    "deletebtn",
     "firstname",
     "lastname",
     "refreshform",

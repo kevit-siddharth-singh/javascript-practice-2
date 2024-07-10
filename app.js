@@ -1,12 +1,12 @@
-// Axios Practice
 const API_URL = "https://dummyapi.io/data/v1/user/"; //Base URL
 const appId = "667a4d799e133752142431fd";
 let loadedData = null;
+
 // ! User List
-// Sid Loading and Showing  Fetched  in the table
+// Sid Loading and Showing Fetched in the table
 showUserList();
+
 function showUserList() {
-  //   console.log(`${API_URL}${id}`);
   var tableBody = document.getElementById("table-body");
 
   axios
@@ -14,38 +14,28 @@ function showUserList() {
       headers: { "app-id": "667a4d799e133752142431fd" },
     })
     .then((result) => {
-      // console.log(result.data);
-      console.log(result.data.data);
       loadedData = result.data.data;
 
       result.data.data.forEach((element) => {
         var tablerow = document.createElement("tr");
         tablerow.classList.add("rowdata");
         id = element.id;
-        tablerow.onclick = (event) => {
-          event.stopPropagation();
-          updateUserDisplay("${element.id}");
-        };
         tablerow.setAttribute("id", `${element.id}`);
+        
+        tablerow.addEventListener('click', (event) => {
+          if (!event.target.closest('td#delete')) {
+            updateUserDisplay(element.id);
+          }
+        });
+
         tablerow.innerHTML = `
-            <td><img src=${
-              element.picture
-            } alt="" width="50" height="50"/> </td>
+            <td><img src=${element.picture} alt="" width="50" height="50"/> </td>
             <td>${element.firstName.slice(0, 9)}</td>
             <td>${element.lastName}</td>
-            <td onclick="deleteFunction('${
-              element.id
-            }')" ><button><i class="fa-solid fa-trash-can 2xl"></i></button>
+            <td id="delete"><button onclick="deleteFunction('${element.id}', event)"><i class="fa-solid fa-trash-can 2xl"></i></button>
             </td>
-            
             `;
         tableBody.append(tablerow);
-        const deleteRow = document.getElementById(`${element.id}`);
-        deleteRow.onclick = (event) => {
-          // console.log('delete ran');
-          event.stopPropagation();
-          deleteFunction(`${element.id}`);
-        };
       });
     })
     .catch((err) => {
@@ -55,7 +45,6 @@ function showUserList() {
 
 // Note: Get User Function
 const getUserData = (id) => {
-  //   console.log(`${API_URL}${id}`);
   var tableBody = document.getElementById("search-table-body");
   var tablerow = document.createElement("tr");
   tablerow.classList.add("searchTable-row");
@@ -65,13 +54,10 @@ const getUserData = (id) => {
       headers: { "app-id": appId },
     })
     .then((result) => {
-      // console.log(result.data);
       const element = result.data;
 
       tablerow.innerHTML = `
-            <td><img src='${
-              element.picture
-            }' alt="" width="50" height="50"/> </td>
+            <td><img src='${element.picture}' alt="" width="50" height="50"/> </td>
             <td>${element.firstName.slice(0, 9)}</td>
             <td>${element.lastName}</td>
             <td>${element.email}</td>
@@ -85,12 +71,8 @@ const getUserData = (id) => {
   search.value = "";
 };
 
-// getUserData("60d0fe4f5311236168a109fa");
-
 // Note: Update Function
-
 function updateUserData(id, firstname, lastname, avatar) {
-  //   console.log(`${API_URL}${id}`);
   axios
     .put(
       `${API_URL}${id}`,
@@ -105,19 +87,14 @@ function updateUserData(id, firstname, lastname, avatar) {
     )
     .then((result) => {
       console.log(result.data);
-      // Refresh the page
       location.reload();
     })
     .catch((err) => {
       console.log(err);
     });
-  // Refresh the page
 }
 
-// updateUserData("","Kent1234","Brewer123");
-
 // Note: Create Function
-
 function createFunction(firstName, lastname, picture, email) {
   axios
     .post(
@@ -134,31 +111,22 @@ function createFunction(firstName, lastname, picture, email) {
     )
     .then((result) => {
       console.log(result.data);
-      // Refresh the page
-      // location.reload();
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-// createFunction();
-
 // Note : Delete Function
-
-function deleteFunction(id) {
+function deleteFunction(id, event) {
+  event.stopPropagation(); // Prevent the event from bubbling up to the row click event
+  
   var deleteRow = document.getElementById(id);
   deleteRow.remove();
-  console.log(deleteRow);
-  // location.reload();
   axios
-    .delete(
-      `${API_URL}${id}`,
-
-      {
-        headers: { "app-id": appId },
-      }
-    )
+    .delete(`${API_URL}${id}`, {
+      headers: { "app-id": appId },
+    })
     .then((result) => {
       console.log(result.data);
     })
@@ -166,10 +134,8 @@ function deleteFunction(id) {
       console.log(err);
     });
 }
-// deleteFunction("667a72cc2a62d980400e564b");
 
 // Sid : Displaying Update User section
-
 function updateUserDisplay(id) {
   var updateForm = document.getElementById("update-user");
   var firstname = document.getElementById("firstname");
@@ -222,18 +188,9 @@ function updateSubmit() {
   let avatar = document.getElementById("avatar");
 
   updateUserData(userId.value, firstname.value, lastname.value, avatar.value);
-
-  // if (document.querySelectorA(){
-  //   const tr = document.querySelectorAll(".rowdata");
-  //   const tableBody = document.getElementById("table-body");
-  //   tableBody.removeChild(tr);
-  //   showUserList();
-
-  // }
 }
 
 //Sid : Add User Logic
-
 function showAddUser() {
   var toogleAdd = document.getElementById("toogle-add");
   var addUserForm = document.getElementById("add-user");
@@ -264,7 +221,6 @@ function addUser() {
   var addavatar = document.getElementById("add-avatar");
   var addemail = document.getElementById("add-email");
 
-  //! For Image .jpg Extension Validation
   var pattern = /\.jpg$/i;
 
   if (
